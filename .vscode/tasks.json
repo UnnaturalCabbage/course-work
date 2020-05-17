@@ -1,0 +1,42 @@
+{
+   // See https://go.microsoft.com/fwlink/?LinkId=733558 
+   // for the documentation about the tasks.json format
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "type": "shell",
+         "label": "cmake: build packages",
+         "command": "cmake",
+         "args": [
+            "-S",
+            "${workspaceRoot}",
+            "-B",
+            "${workspaceRoot}\\build",
+            "\"-DCMAKE_TOOLCHAIN_FILE=${workspaceRoot}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake\""
+         ],
+         "group": "none"
+      },
+      {
+         "type": "shell",
+         "label": "cmake: build code",
+         "command": "cmake",
+         "args": [
+            "--build",
+            "${workspaceRoot}\\build",
+            "--target",
+            "ALL_BUILD",
+            "--config",
+            "Release"
+         ],
+         "group": "build",
+         "problemMatcher": []
+      },
+      {
+         "type": "shell",
+         "label": "cmake: run release",
+         "command": "${workspaceRoot}\\build\\Release\\cmake_vcpkg_template.exe",
+         "group": "test",
+         "problemMatcher": []
+      }
+   ]
+}
