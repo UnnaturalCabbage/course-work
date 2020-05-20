@@ -91,8 +91,8 @@ public:
                                     }};
          this->db->save(cand);
          this->db->write();
-         this->currUser = this->db->getId(this->db->find({{ "sex", "male" }})[0]);
       }
+      this->currUser = this->db->getId(this->db->find({{ "sex", "male" }})[0]);
    }
    
    void changeAccount(std::string newId) {
@@ -120,7 +120,9 @@ public:
            << "4. Посмотреть входящие" << endl
            << "5. Посмотреть отправленные" << endl
            << "6. Принять запрос" << endl
-           << "7. Поменять аккаунт" << endl;
+           << "7. Поменять аккаунт" << endl
+           << "8. Добавить пользователя" << endl
+           << "9. Удалить пользователя" << endl;
       this->action(); 
    }
    
@@ -132,6 +134,14 @@ public:
       
       std::string name;
       std::string id;
+      
+      string firstname;
+      string lastname;
+      int age;
+      string sex;
+      map<string, string> about;
+      map<string, string> req;
+      string key;
       switch (actionNum) {
       case 1:
          cout << "Введите имя: ";
@@ -200,6 +210,37 @@ public:
          this->changeAccount(id);
          this->displayMenu();
          break;
+      case 8:
+         cout << "Введите имя: ";
+         cin >> firstname;
+         cout << "Введите фамилию: ";
+         cin >> lastname;
+         cout << "Введите возраст: ";
+         cin >> age;
+         cout << "Введите ваш пол: ";
+         cin >> sex;
+         cout << "Введите данные о себе или напишите exit для перехода к след. пункту: " << endl;
+         cin >> key;
+         while (key.compare("exit") != 0) {
+            about[key] = "1";
+            cin >> key;
+         }
+         cout << "Введите ваши предпочтения или напишите exit для перехода к след. пункту: " << endl;
+         cin >> key;
+         while (key.compare("exit") != 0) {
+            req[key] = "1";
+            cin >> key;
+         }
+         cout << "id созданого пользователя: " << this->db->addUser(firstname, lastname, age, sex, about, req) << std::endl;
+         this->displayMenu();
+         break;
+      case 9:
+         cout << "Введите id пользователя, которого хотите удалить: ";
+         cin >> id;
+         this->db->removeUser(id);
+         std::cout << "Успешно удалено" << std::endl;
+         this->displayMenu();
+         break;
       }
    }
 };
@@ -211,7 +252,7 @@ int main() {
    
    DatingDB users;
    DatingDBTestDriver testDriver(&users);
-   testDriver.fillDB(20);
+   testDriver.fillDB(0);
    testDriver.displayMenu(); 
    
    system("pause");

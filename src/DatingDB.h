@@ -24,4 +24,7 @@ public:
    bool accept(JsonDB::Model::Schema user, std::string id);
    std::vector<JsonDB::Model::Schema> match(JsonDB::Model::Schema person, const int limit = 3);
    bool send(std::string from, std::string to, std::string message);
+   
+   std::string addUser(std::string firstname, std::string lastname, int age, std::string sex, std::map<std::string, std::string> about, std::map<std::string, std::string> req);
+   void removeUser(std::string id);
 };

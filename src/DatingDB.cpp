@@ -142,3 +142,26 @@ bool DatingDB::accept(JsonDB::Model::Schema user, std::string id) {
    
    return true;
 }
+
+std::string DatingDB::addUser(std::string firstname, std::string lastname, int age, std::string sex, std::map<std::string, std::string> about, std::map<std::string, std::string> req) {
+   JsonDB::Model::Schema newUser = this->save({{
+                  "firstname", firstname
+               }, {
+                  "lastname", lastname
+               }, {
+                  "age", age
+               }, {
+                  "sex", sex
+               }, {
+                  "about", about
+               }, {
+                  "requirements", req
+               }});
+   this->write();         
+   return std::get<std::string>(newUser["_id"]);
+}
+
+void DatingDB::removeUser(std::string id) {
+   this->remove(id);
+   this->write();  
+}
